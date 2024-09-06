@@ -6,7 +6,7 @@ write func declaration in add.cpp
 write func defn inside class Math PUBLIC in lib.h 
   //include lib.h in main file using (#inlcude""lib.h")
 
-  2) gcc add.o main.c //--> links add.o and main.c together
+  2) g++ add.o main.cpp //--> links add.o and main.c together
 
 Execute compiled file:
   3) ./a.out if compilation result is a .out file 

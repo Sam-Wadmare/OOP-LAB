@@ -36,7 +36,7 @@ int main() {
   
     cout << "\nobj1.val: "<< obj1.val << "\n" << "obj1.p:   "<< *obj1.p << endl;
     cout << "obj2.val: "<< obj2.val << "\n" << "obj2.p:   "<< *obj2.p << endl;
-    cout << "obj3.val: "<< obj3-> val << "\n" << "obj3.p:  "<< *obj3->p << "\n" << endl;
+    cout << "obj3.val: "<< obj3-> val << "\n" << "obj3.p:   "<< *obj3->p << "\n" << endl;
   
     delete(obj3);
     return 0;
