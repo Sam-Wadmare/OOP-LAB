@@ -1,0 +1,25 @@
+#include <iostream>
+#include <string>  // Include this for std::string
+using namespace std;
+
+class Student {
+public:
+    string name;  // Use std::string for handling strings
+    int fieldID;
+};
+
+int main() {
+    Student std;
+
+    // taking input from user 
+    cout << "Enter name of Student: ";
+    cin >> std.name; 
+    cout << "Enter ID: ";
+    cin >> std.fieldID; 
+
+    // Display the values
+    cout << "Name: " << std.name << endl;
+    cout << "ID: " << std.fieldID << endl;
+
+    return 0;
+}
