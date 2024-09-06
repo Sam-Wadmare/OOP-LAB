@@ -1,0 +1,37 @@
+
+#include <iostream>
+using namespace std;
+class demo{
+    public:
+    int i;
+    int *val;
+    demo() {
+        i=1;
+        val= new int;
+        *val=2;
+        cout<<"constructor"<<endl;
+    }
+    demo(demo &obj){
+      val = new int; 
+      cout<<"copy constructor"<<endl;
+    }
+    ~demo() {
+        delete(this -> val);
+        cout<<"destructor"<<endl;
+    }
+};
+int main() {
+    demo obj1;
+    demo obj2=obj1;
+     obj2.i = 3;
+    *obj2.val = 4;
+    demo *obj3 = new demo;
+    obj3->i=5;
+    *obj3->val=6;
+    cout<<obj1.i<<" "<<*obj1.val<<endl;
+    cout<<obj2.i<<" "<<*obj2.val<<endl;
+    cout<<obj3 -> i<<" "<<*obj3->val<<endl;
+    delete(obj3);
+    
+    return 0;
+}
