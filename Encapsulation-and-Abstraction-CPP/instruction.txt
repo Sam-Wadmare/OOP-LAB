@@ -12,3 +12,11 @@ Execute compiled file:
   3) ./a.out if compilation result is a .out file 
   OR 
   3) ./a.exe if the compilation result is .exe file 
+
+
+
+
+> Create a .h (header file) file which includes the definition of the abstracted function
+> In a .cpp file import the .h file and write only the declaration
+> create .o (object file) file --> the function is now abstracted as the user cant access .o files directly
+> link .o & main file together --> Enables the usage of abstracted function in main method
