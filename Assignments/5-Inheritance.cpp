@@ -1,151 +1,194 @@
 /*
+Author Details: 
+  Shital Manoj Patil
+  2324001011
+  SY B77
+
+Program Details : 
+  Sub  : OOP
+  Name : Assignment 05 - Simple Inheritance
+*/
+
+/*
 TODO :
-1] store it in heap 
+1] Store it in heap
 2] Should be dynamic (no fixed size array)
 3] Use a single array (person) instead of student & Teacher
-4] use flags to identify if person[cnt] is teacher or student --> set flag while entering details --> when displaying differentiate by using flag
-5] Research on how to identify which element is at current position in array
+4] Use flags to identify if person[cnt] is teacher or student -> set flag while entering details -> when displaying differentiate by using flag
+5] Research on how to identify which element is at current position in array (dynamic casting methods & late-binding method)
+6] Use lecture stuff (late-binding)
+7] Use linked lists instead of array
 */
+
+/*
+ITERATION 3: 
+> TODO Completed 1, 3, 4, 6 , 2 ,7
+> Utilising Linkedlist instead of array for removal of upperbound(MAX) limitations
+> Stored objects on Heap 
+> Used a single array to store person pointers (create variables of Abs Class ) that point to heap objects instead of 2 arrays of student and teacher
+> Used isTeacher flag to identify student or teacher from the people list
+> *Used cout in classes of student & teacher( I think can be fixed using a common function getmoney() & PVF with overriding (late-binding)) 
+> Late Binding implemented as using pure virtual func and overriding methods in child classes
+  the call made is people[i]->display() the compiler determines obj is student or teacher at runtime 
+> Created Personlist as pointer class and added methods such as addperson & displayAll for improved readability in main
+> Using destructors to remove mem leaks
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+*/
+
 
 #include <iostream>
 #include <cstring>
 using namespace std;
 
-#define MAX 15
+class Person {
+private:
+    unsigned int id;
+    char name[10];
+    bool isTeacher;
 
-class Person{
-    private:
-        unsigned int id;
-        char name[10];
-        
-    public:
-    	unsigned int getID(){
-    		return this->id;
-    	}
-    	
-    	char* getName(){
-            return this->name;
-        }
-        
-        void setName(char* stdname){
-            strncpy(name , stdname , sizeof(name));
-        }
-        
-        void setID(unsigned int stdID){
-        	this -> id = stdID;
-        }
+public:
+    Person* next;  // Pointer to the next person in the list
+
+    Person() : next(nullptr) {}
+    virtual ~Person() {} //allows to call the correct destructor of child classes
+
+    unsigned int getID() const { return id; }
+    const char* getName() const { return name; }
+    bool getIsTeacher() const { return isTeacher; }
+
+    void setID(unsigned int personID) { id = personID; }
+    void setName(const char* personName) {
+        strncpy(name, personName, sizeof(name) - 1);
+        name[sizeof(name) - 1] = '\0';
+    }
+    void setIsTeacher(bool teacher) { isTeacher = teacher; }
+
+    virtual void display() = 0; // Pure Virtual Func
 };
 
-class Student:public Person{
-    private:
-        int fees;
-	public:
-		unsigned int getFees(){
-    		return this->fees;
-    	}
-    	void setFees(unsigned int stdFees){
-    		 this -> fees = stdFees;
-    	}
+class Student : public Person {
+private:
+    int fees;
+
+public:
+    Student() { this->setIsTeacher(false); }
+    void setFees(int studentFees) { fees = studentFees; }
+    void display() override {
+        cout << this->getID() << " | " << this->getName() << " | " << fees << endl;
+    }
 };
 
-class Teacher:public Person{
-    private:
-        int salary;
-    public:
-    	unsigned int getSalary(){
-    		return this -> salary;
-    	}
-    	void setSalary(unsigned int tchrSalary){
-    		 this -> salary = tchrSalary;
-    	}
+class Teacher : public Person {
+private:
+    int salary;
+
+public:
+    Teacher() { this->setIsTeacher(true); }
+    void setSalary(int teacherSalary) { salary = teacherSalary; }
+    void display() override {
+        cout << this->getID() << " | " << this->getName() << " | " << salary << endl;
+    }
 };
 
-/*develop a menu driven program with following options
-1. create student -- should create object of student and store it in array
-2. create teacher -- should create object of teacher and store it in array
-3. display all objects -- display all teacher and student objects.
-4. exit -- exit from the program
-- the program shall loop until user selects exit option
-*/
+class PersonList {
+private:
+    Person* head;
 
-int main(){
-	int choice;
-	int scount = 1;
-	int tcount = 1;
-	char name[10];
-	unsigned int id,money;
-	
-	Student s[MAX];
-	Teacher t[MAX];
-	
-	cout << "ERP System" << endl;
-	while (choice != 4){
-		cout << "\nMenu: \n 1]Add Student\n 2]Add Teacher \n 3]Display All\n 4]Exit \nEnter Your Choice:" << endl;
-		cin >> choice;
-		switch (choice){
-			case 1:
-			//student creation...
-		 		cout << "Student :" << endl;
-				cout << "Enter Student ID:";
-				cin >> id;
-				s[scount].setID(id);
-				
-				cout << "Enter Student Name:";
-				cin >> name;
-				s[scount].setName(name);
-				
-				cout << "Enter Student Fees:";
-				cin >> money;
-				s[scount].setFees(money);
-				
-				scount++;
-				break;
-			
-			
-			
-			case 2:
-			//teacher creation...
-			
-				cout << "Teacher Details:" << endl;
-				cout << "Enter Teacher ID:" ;
-				cin >> id;
-				t[tcount].setID(id);
-				
-				cout << "Enter Teacher Name:" ;
-				cin >> name;
-				t[tcount].setName(name);
-				
-				cout << "Enter Teacher Salary:";
-				cin >> money;
-				t[tcount].setSalary(money);
-				
-				tcount++;
-				break;
-			
-			case 3:
-			//display all...
-				cout << "Student & Teacher list:" << endl;
-				cout << "\nStudent Data:" <<endl;
-				cout << "sr.no |ID        |Name      |Fees     \n---------------------------------------------" << endl;
-				for(int i = 1;i<scount;i++){
-					cout<<i<<"   "<< s[i].getID() << " " << s[i].getName() << " " << s[i].getFees()<<endl;
-				}
-				cout << "\nTeacher Data:" << endl;
-				cout << "sr.no |ID        |Name      |Salary\n---------------------------------------------" << endl;
-				for(int i = 1;i<scount;i++){
-					cout<<i << "   " << t[i].getID()<<" "<<t[i].getName() << " " << t[i].getSalary() << endl;
-				}
-				break;
-			
-			case 4: 
-			    // exit option
-				cout << "\nExiting..."<< endl;
-				break;
-				
-			default:
-				cout << "Please enter a valid option." << endl;
-				break;
-		}
-	}
-	return 0;
+public:
+    PersonList() : head(nullptr) {} // assigning nullptr to new node generated with member initalizer list 
+    
+    //destructor
+    ~PersonList() { 
+        Person* current = head;
+        while (current != nullptr) {
+            Person* next = current->next;
+            delete current;
+            current = next;
+        }
+    }
+
+    void addPerson(Person* newPerson) { // adds person at beginning of the list
+        newPerson->next = head;
+        head = newPerson;
+    }
+    
+    void displayCategory(bool isTeacher) {
+        Person* current = head;
+        while (current != nullptr) {
+            if (current->getIsTeacher() == isTeacher) { // compares flags to identify student or teacher (using 2 tables to show members hence flags needed)
+                current->display(); // Example of late binding as it detects and calls the correct display func
+            }
+            current = current->next;
+        }
+    }
+    
+    void displayAll() {
+        cout << "\nAll Members: ";
+        cout << "\nStudents:" << endl;
+        cout << "ID  | Name     | Fees" << endl;
+        cout << "----------------------------" << endl;
+        displayCategory(false);
+
+        cout << "\nTeachers:" << endl;
+        cout << "ID  | Name     | Salary" << endl;
+        cout << "----------------------------" << endl;
+        displayCategory(true);
+    }
+};
+
+int main() {
+    PersonList people;
+    int choice;
+    unsigned int id;
+    char name[10];
+    int money;
+
+    cout << "ERP System\n-------------" << endl;
+    while (true) {
+        cout << "\nMenu: \n 1]Add Student\n 2]Add Teacher\n 3]Display All\n 4]Exit \nEnter Your Choice:";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+            case 2:
+                cout << "\nEnter ID: ";
+                cin >> id;
+                cout << "Enter Name: ";
+                cin >> name;
+
+                if (choice == 1) {
+                    cout << "Enter Fees: ";
+                    cin >> money;
+                    Student* student = new Student();
+                    student->setID(id);
+                    student->setName(name);
+                    student->setFees(money);
+                    people.addPerson(student);
+                    cout << "Student added successfully!" << endl;
+                } else {
+                    cout << "Enter Salary: ";
+                    cin >> money;
+                    Teacher* teacher = new Teacher();
+                    teacher->setID(id);
+                    teacher->setName(name);
+                    teacher->setSalary(money);
+                    people.addPerson(teacher);
+                    cout << "Teacher added successfully!" << endl;
+                }
+                break;
+
+            case 3:
+                people.displayAll();
+                break;
+
+            case 4:
+                cout << "Exiting..." << endl;
+                return 0;
+
+            default:
+                cout << "Invalid choice. Please try again." << endl;
+        }
+    }
+
+    return 0;
 }

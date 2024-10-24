@@ -3,6 +3,10 @@ Author Details:
   Shital Manoj Patil
   2324001011
   SY B77
+
+Program Details : 
+  Sub  : OOP
+  Name : Assignment 05 - Simple Inheritance
 */
 
 /*
@@ -10,8 +14,8 @@ TODO :
 1] Store it in heap
 2] Should be dynamic (no fixed size array)
 3] Use a single array (person) instead of student & Teacher
-4] Use flags to identify if person[cnt] is teacher or student -> set flag while entering details ->when displaying differentiate by using flag
-5] Research on how to identify which element is at current position in array (dynamic casting methods)
+4] Use flags to identify if person[cnt] is teacher or student -> set flag while entering details -> when displaying differentiate by using flag
+5] Research on how to identify which element is at current position in array (dynamic casting methods & late-binding method)
 6] Use lecture stuff (late-binding)
 7] Use linked lists instead of array
 */
@@ -22,12 +26,13 @@ ITERATION 3:
 > Utilising Linkedlist instead of array for removal of upperbound(MAX) limitations
 > Stored objects on Heap 
 > Used a single array to store person pointers (create variables of Abs Class ) that point to heap objects instead of 2 arrays of student and teacher
-> Used isTeacher flag to identify student or teacher from the people array
+> Used isTeacher flag to identify student or teacher from the people list
 > *Used cout in classes of student & teacher( I think can be fixed using a common function getmoney() & PVF with overriding (late-binding)) 
 > Late Binding implemented as using pure virtual func and overriding methods in child classes
   the call made is people[i]->display() the compiler determines obj is student or teacher at runtime 
 > Created Personlist as pointer class and added methods such as addperson & displayAll for improved readability in main
 > Using destructors to remove mem leaks
+--------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
 
@@ -58,7 +63,7 @@ public:
     }
     void setIsTeacher(bool teacher) { isTeacher = teacher; }
 
-    virtual void display() = 0; // PVF
+    virtual void display() = 0; // Pure Virtual Func
 };
 
 class Student : public Person {
@@ -67,7 +72,6 @@ private:
 
 public:
     Student() { this->setIsTeacher(false); }
-    //int getFees() const { return fees; } unnecessary as 'fees' can be directly accessed
     void setFees(int studentFees) { fees = studentFees; }
     void display() override {
         cout << this->getID() << " | " << this->getName() << " | " << fees << endl;
@@ -80,7 +84,6 @@ private:
 
 public:
     Teacher() { this->setIsTeacher(true); }
-    //int getSalary() const { return salary; } unnecessary as 'salary' can be directly accessed
     void setSalary(int teacherSalary) { salary = teacherSalary; }
     void display() override {
         cout << this->getID() << " | " << this->getName() << " | " << salary << endl;
@@ -112,8 +115,8 @@ public:
     void displayCategory(bool isTeacher) {
         Person* current = head;
         while (current != nullptr) {
-            if (current->getIsTeacher() == isTeacher) { // compares flags to identify student or teacher
-                current->display(); // example of late-binding
+            if (current->getIsTeacher() == isTeacher) { // compares flags to identify student or teacher (using 2 tables to show members hence flags needed)
+                current->display(); // Example of late binding as it detects and calls the correct display func
             }
             current = current->next;
         }
